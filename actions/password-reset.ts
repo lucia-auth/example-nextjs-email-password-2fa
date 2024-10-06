@@ -140,7 +140,7 @@ export async function verifyPasswordReset2FAWithTOTPAction(
 			message: "Not authenticated"
 		};
 	}
-	if (!user.registered2FA || session.twoFactorVerified || !session.emailVerified) {
+	if (!session.emailVerified || !user.registered2FA || session.twoFactorVerified) {
 		return {
 			message: "Forbidden"
 		};
