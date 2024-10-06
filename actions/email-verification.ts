@@ -96,7 +96,6 @@ export async function resendEmailVerificationCodeAction(): Promise<ActionResult>
 			message: "Too many requests"
 		};
 	}
-
 	let verificationRequest = getUserEmailVerificationRequestFromRequest();
 	if (verificationRequest === null) {
 		if (user.emailVerified) {
@@ -104,8 +103,18 @@ export async function resendEmailVerificationCodeAction(): Promise<ActionResult>
 				message: "Forbidden"
 			};
 		}
+		if (!sendVerificationEmailBucket.consume(user.id, 1)) {
+			return {
+				message: "Too many requests"
+			};
+		}
 		verificationRequest = createEmailVerificationRequest(user.id, user.email);
 	} else {
+		if (!sendVerificationEmailBucket.consume(user.id, 1)) {
+			return {
+				message: "Too many requests"
+			};
+		}
 		verificationRequest = createEmailVerificationRequest(user.id, verificationRequest.email);
 	}
 	sendVerificationEmail(verificationRequest.email, verificationRequest.code);

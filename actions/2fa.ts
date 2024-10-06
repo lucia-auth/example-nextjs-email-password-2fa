@@ -15,12 +15,7 @@ export async function verify2FAAction(_prev: ActionResult, formData: FormData): 
 			message: "Not authenticated"
 		};
 	}
-	if (!user.emailVerified) {
-		return {
-			message: "Forbidden"
-		};
-	}
-	if (!user.registered2FA) {
+	if (!user.emailVerified || !user.registered2FA || session.twoFactorVerified) {
 		return {
 			message: "Forbidden"
 		};
@@ -140,12 +135,7 @@ export async function reset2FAAction(_prev: ActionResult, formData: FormData): P
 			message: "Not authenticated"
 		};
 	}
-	if (!user.emailVerified) {
-		return {
-			message: "Forbidden"
-		};
-	}
-	if (!user.registered2FA) {
+	if (!user.emailVerified || !user.registered2FA || session.twoFactorVerified) {
 		return {
 			message: "Forbidden"
 		};

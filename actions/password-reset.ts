@@ -89,17 +89,17 @@ export async function verifyPasswordResetEmailAction(_prev: ActionResult, formDa
 			message: "Not authenticated"
 		};
 	}
+	if (session.emailVerified) {
+		return {
+			message: "Forbidden"
+		};
+	}
 	if (!emailVerificationBucket.check(session.userId, 1)) {
 		return {
 			message: "Too many requests"
 		};
 	}
 
-	if (session.emailVerified) {
-		return {
-			message: "Already verified"
-		};
-	}
 	const code = formData.get("code");
 	if (typeof code !== "string") {
 		return {
@@ -140,14 +140,14 @@ export async function verifyPasswordReset2FAWithTOTPAction(
 			message: "Not authenticated"
 		};
 	}
-	if (!totpBucket.check(session.userId, 1)) {
-		return {
-			message: "Too many requests"
-		};
-	}
 	if (!user.registered2FA || session.twoFactorVerified || !session.emailVerified) {
 		return {
 			message: "Forbidden"
+		};
+	}
+	if (!totpBucket.check(session.userId, 1)) {
+		return {
+			message: "Too many requests"
 		};
 	}
 
@@ -187,28 +187,23 @@ export async function verifyPasswordReset2FAWithRecoveryCodeAction(
 	_prev: ActionResult,
 	formData: FormData
 ): Promise<ActionResult> {
-	const { session } = validatePasswordResetSessionRequest();
+	const { session, user } = validatePasswordResetSessionRequest();
 	if (session === null) {
 		return {
 			message: "Not authenticated"
 		};
 	}
-	if (!session.emailVerified) {
+	if (!session.emailVerified || !user.registered2FA || session.twoFactorVerified) {
 		return {
 			message: "Forbidden"
 		};
 	}
+
 	if (!recoveryCodeBucket.check(session.userId, 1)) {
 		return {
 			message: "Too many requests"
 		};
 	}
-	if (session.twoFactorVerified) {
-		return {
-			message: "Already verified"
-		};
-	}
-
 	const code = formData.get("code");
 	if (typeof code !== "string") {
 		return {
