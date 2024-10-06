@@ -1,6 +1,6 @@
 import React from "react";
 
-import { UpdateEmailForm, UpdatePasswordForm } from "@/components/user";
+import { UpdateEmailForm, UpdatePasswordForm } from "./components";
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 import { getUserRecoverCode } from "@/lib/server/user";

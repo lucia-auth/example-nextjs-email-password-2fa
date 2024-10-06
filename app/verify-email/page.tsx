@@ -1,5 +1,5 @@
 import React from "react";
-import { EmailVerificationForm, ResendEmailVerificationCodeForm } from "@/components/email-verification";
+import { EmailVerificationForm, ResendEmailVerificationCodeForm } from "./components";
 
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";

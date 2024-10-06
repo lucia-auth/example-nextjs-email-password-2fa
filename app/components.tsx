@@ -1,6 +1,6 @@
 "use client";
 
-import { logoutAction } from "@/actions/logout";
+import { logoutAction } from "./actions";
 import { useFormState } from "react-dom";
 
 const initialState = {

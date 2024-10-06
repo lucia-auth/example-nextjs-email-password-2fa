@@ -1,6 +1,6 @@
 "use client";
 
-import { resendEmailVerificationCodeAction, verifyEmailAction } from "@/actions/email-verification";
+import { resendEmailVerificationCodeAction, verifyEmailAction } from "./actions";
 import { useFormState } from "react-dom";
 
 const emailVerificationInitialState = {

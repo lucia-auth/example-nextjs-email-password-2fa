@@ -1,5 +1,5 @@
 import React from "react";
-import { SignUpForm } from "@/components/signup";
+import { SignUpForm } from "./components";
 import Link from "next/link";
 
 import { getCurrentSession } from "@/lib/server/session";

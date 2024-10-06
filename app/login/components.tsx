@@ -1,6 +1,6 @@
 "use client";
 
-import { loginAction } from "@/actions/login";
+import { loginAction } from "./actions";
 import { useFormState } from "react-dom";
 
 const initialState = {

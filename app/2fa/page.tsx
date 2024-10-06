@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import { TwoFactorVerificationForm } from "@/components/2fa";
+import { TwoFactorVerificationForm } from "./components";
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ForgotPasswordForm } from "@/components/password-reset";
+import { ForgotPasswordForm } from "./components";
 import Link from "next/link";
 
 export default function Page() {

@@ -1,5 +1,5 @@
 import React from "react";
-import { TwoFactorResetForm } from "@/components/2fa";
+import { TwoFactorResetForm } from "./components";
 
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";

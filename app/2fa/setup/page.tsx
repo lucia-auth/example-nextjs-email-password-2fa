@@ -1,5 +1,5 @@
 import React from "react";
-import { TwoFactorSetUpForm } from "@/components/2fa";
+import { TwoFactorSetUpForm } from "./components";
 
 import { getCurrentSession } from "@/lib/server/session";
 import { encodeBase64 } from "@oslojs/encoding";

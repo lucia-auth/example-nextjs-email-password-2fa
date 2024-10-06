@@ -1,6 +1,6 @@
 "use client";
 
-import { updateEmailAction, updatePasswordAction } from "@/actions/user";
+import { updateEmailAction, updatePasswordAction } from "./actions";
 import { useFormState } from "react-dom";
 
 const initialUpdatePasswordState = {

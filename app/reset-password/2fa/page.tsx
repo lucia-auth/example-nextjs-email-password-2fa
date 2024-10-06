@@ -1,5 +1,5 @@
 import React from "react";
-import { PasswordResetRecoveryCodeForm, PasswordResetTOTPForm } from "@/components/password-reset";
+import { PasswordResetRecoveryCodeForm, PasswordResetTOTPForm } from "./components";
 
 import { validatePasswordResetSessionRequest } from "@/lib/server/password-reset";
 import { redirect } from "next/navigation";
