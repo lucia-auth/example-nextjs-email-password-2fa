@@ -45,6 +45,7 @@ export default function Page() {
 					<section>
 						<h1>Recovery code</h1>
 						<p>Your recovery code is: {recoveryCode}</p>
+						{/* TODO!! */}
 						<button>Generate new code</button>
 					</section>
 				)}
