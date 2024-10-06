@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 import { getCurrentSession } from "@/lib/server/session";
 import { getUserRecoverCode } from "@/lib/server/user";
@@ -24,7 +25,7 @@ export default function Page() {
 			<h1>Recovery code</h1>
 			<p>Your recovery code is: {recoveryCode}</p>
 			<p>You can use this recovery code if you lose access to your second factors.</p>
-			<a href="/">Next</a>
+			<Link href="/">Next</Link>
 		</>
 	);
 }

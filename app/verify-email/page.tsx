@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { EmailVerificationForm, ResendEmailVerificationCodeForm } from "./components";
 
 import { getCurrentSession } from "@/lib/server/session";
@@ -23,7 +24,7 @@ export default function Page() {
 			<p>We sent an 8-digit code to {verificationRequest?.email ?? user.email}.</p>
 			<EmailVerificationForm />
 			<ResendEmailVerificationCodeForm />
-			<a href="/settings">Change your email</a>
+			<Link href="/settings">Change your email</Link>
 		</>
 	);
 }

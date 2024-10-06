@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 import { UpdateEmailForm, UpdatePasswordForm } from "./components";
 import { getCurrentSession } from "@/lib/server/session";
@@ -20,8 +21,8 @@ export default function Page() {
 	return (
 		<>
 			<header>
-				<a href="/">Home</a>
-				<a href="/settings">Settings</a>
+				<Link href="/">Home</Link>
+				<Link href="/settings">Settings</Link>
 			</header>
 			<main>
 				<h1>Settings</h1>
@@ -37,7 +38,7 @@ export default function Page() {
 				{user.registered2FA && (
 					<section>
 						<h2>Update two-factor authentication</h2>
-						<a href="/2fa/setup">Update</a>
+						<Link href="/2fa/setup">Update</Link>
 					</section>
 				)}
 
