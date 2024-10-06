@@ -1,7 +1,7 @@
 "use server";
 
 import { verifyPasswordHash, verifyPasswordStrength } from "@/lib/server/password";
-import { Throttler } from "@/lib/server/rate-limit";
+import { ExpiringTokenBucket } from "@/lib/server/rate-limit";
 import {
 	createSession,
 	generateSessionToken,
@@ -21,7 +21,7 @@ import { redirect } from "next/navigation";
 
 import type { SessionFlags } from "@/lib/server/session";
 
-const passwordThrottler = new Throttler<number>([1, 2, 4, 8, 16, 30, 60, 180, 300]);
+const passwordUpdateBucket = new ExpiringTokenBucket<string>(5, 60 * 30);
 
 export async function updatePasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	const { session, user } = getCurrentSession();
@@ -40,6 +40,11 @@ export async function updatePasswordAction(_prev: ActionResult, formData: FormDa
 			message: "Forbidden"
 		};
 	}
+	if (!passwordUpdateBucket.check(session.id, 1)) {
+		return {
+			message: "Too many requests"
+		};
+	}
 
 	const password = formData.get("password");
 	const newPassword = formData.get("new_password");
@@ -54,7 +59,7 @@ export async function updatePasswordAction(_prev: ActionResult, formData: FormDa
 			message: "Weak password"
 		};
 	}
-	if (!passwordThrottler.consume(user.id)) {
+	if (!passwordUpdateBucket.consume(session.id, 1)) {
 		return {
 			message: "Too many requests"
 		};
