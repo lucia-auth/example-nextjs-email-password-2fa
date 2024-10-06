@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Email and password example with 2FA in Next.js
 
-## Getting Started
+Built with SQLite.
 
-First, run the development server:
+- Password check with HaveIBeenPwned
+- Email verification
+- 2FA with TOTP
+- 2FA recovery codes
+- Password reset
+- Login throttling and rate limiting
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Emails are just logged to the console. Rate limiting is implemented using JavaScript `Map`.
+
+## Initialize project
+
+Create `sqlite.db` and run `setup.sql`.
+
+```
+sqlite3 sqlite.db
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a .env file. Generate a 128 bit (16 byte) string, base64 encode it, and set it as `ENCRYPTION_KEY`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+ENCRYPTION_KEY="L9pmqRJnO1ZJSQ2svbHuBA=="
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> You can use OpenSSL to quickly generate a secure key.
+>
+> ```bash
+> openssl rand --base64 16
+> ```
 
-## Learn More
+Run the application:
 
-To learn more about Next.js, take a look at the following resources:
+```
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- We do not consider user enumeration to be a real vulnerability so please don't open issues on it. If you really need to prevent it, just don't use emails.
+- This example does not handle unexpected errors gracefully.
+- There are some major code duplications (specifically for 2FA) to keep the codebase simple.
+- TODO: You may need to rewrite some queries and use transactions to avoid race conditions when using MySQL, Postgres, etc.
+- TODO: This project relies on the `X-Forwarded-For` header for getting the client's IP address.
+- TODO: Logging should be implemented.

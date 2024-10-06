@@ -1,6 +1,5 @@
 import React from "react";
-import { LogoutButton } from "@/components/logout";
-import Link from "next/link";
+import { TwoFactorResetForm } from "@/components/2fa";
 
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
@@ -16,19 +15,13 @@ export default function Page() {
 	if (!user.registered2FA) {
 		return redirect("/2fa/setup");
 	}
-	if (!session.twoFactorVerified) {
-		return redirect("/2fa");
+	if (session.twoFactorVerified) {
+		return redirect("/");
 	}
 	return (
 		<>
-			<header>
-				<Link href="/">Home</Link>
-				<Link href="/settings">Settings</Link>
-			</header>
-			<main>
-				<h1>Hi {user.username}!</h1>
-				<LogoutButton />
-			</main>
+			<h1>Recover your account</h1>
+			<TwoFactorResetForm />
 		</>
 	);
 }

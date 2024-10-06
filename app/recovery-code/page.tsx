@@ -1,8 +1,7 @@
 import React from "react";
-import { LogoutButton } from "@/components/logout";
-import Link from "next/link";
 
 import { getCurrentSession } from "@/lib/server/session";
+import { getUserRecoverCode } from "@/lib/server/user";
 import { redirect } from "next/navigation";
 
 export default function Page() {
@@ -19,16 +18,13 @@ export default function Page() {
 	if (!session.twoFactorVerified) {
 		return redirect("/2fa");
 	}
+	const recoveryCode = getUserRecoverCode(user.id);
 	return (
 		<>
-			<header>
-				<Link href="/">Home</Link>
-				<Link href="/settings">Settings</Link>
-			</header>
-			<main>
-				<h1>Hi {user.username}!</h1>
-				<LogoutButton />
-			</main>
+			<h1>Recovery code</h1>
+			<p>Your recovery code is: {recoveryCode}</p>
+			<p>You can use this recovery code if you lose access to your second factors.</p>
+			<a href="/">Next</a>
 		</>
 	);
 }
