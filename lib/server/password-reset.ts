@@ -37,7 +37,7 @@ WHERE password_reset_session.id = ?`,
 		[sessionId]
 	);
 	if (row === null) {
-		return { token: null, session: null, user: null };
+		return { session: null, user: null };
 	}
 	const session: PasswordResetSession = {
 		id: row.string(0),
@@ -57,9 +57,9 @@ WHERE password_reset_session.id = ?`,
 	};
 	if (Date.now() >= session.expiresAt.getTime()) {
 		db.execute("DELETE FROM password_reset_session WHERE id = ?", [session.id]);
-		return { token: null, session: null, user: null };
+		return { session: null, user: null };
 	}
-	return { token, session, user };
+	return { session, user };
 }
 
 export function setPasswordResetSessionAsEmailVerified(sessionId: string): void {
@@ -77,7 +77,7 @@ export function invalidateUserPasswordResetSessions(userId: number): void {
 export function validatePasswordResetSessionRequest(): PasswordResetSessionValidationResult {
 	const token = cookies().get("password_reset_session")?.value ?? null;
 	if (token === null) {
-		return { token: null, session: null, user: null };
+		return { session: null, user: null };
 	}
 	const result = validatePasswordResetSessionToken(token);
 	if (result.session === null) {
@@ -121,5 +121,5 @@ export interface PasswordResetSession {
 }
 
 export type PasswordResetSessionValidationResult =
-	| { token: string; session: PasswordResetSession; user: User }
-	| { token: null; session: null; user: null };
+	| { session: PasswordResetSession; user: User }
+	| { session: null; user: null };
