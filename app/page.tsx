@@ -1,4 +1,3 @@
-import React from "react";
 import { LogoutButton } from "./components";
 import Link from "next/link";
 

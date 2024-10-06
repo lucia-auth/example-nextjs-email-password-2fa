@@ -1,4 +1,3 @@
-import React from "react";
 import { PasswordResetRecoveryCodeForm, PasswordResetTOTPForm } from "./components";
 
 import { validatePasswordResetSessionRequest } from "@/lib/server/password-reset";

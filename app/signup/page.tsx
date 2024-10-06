@@ -1,4 +1,3 @@
-import React from "react";
 import { SignUpForm } from "./components";
 import Link from "next/link";
 

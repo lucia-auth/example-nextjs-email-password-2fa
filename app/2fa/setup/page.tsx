@@ -1,4 +1,3 @@
-import React from "react";
 import { TwoFactorSetUpForm } from "./components";
 
 import { getCurrentSession } from "@/lib/server/session";

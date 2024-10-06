@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 import { TwoFactorVerificationForm } from "./components";
 import { getCurrentSession } from "@/lib/server/session";
