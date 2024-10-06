@@ -17,7 +17,7 @@ import { redirect } from "next/navigation";
 
 const bucket = new ExpiringTokenBucket<number>(5, 60 * 30);
 
-export async function verifyEmailAction(_: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function verifyEmailAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	const { session, user } = getCurrentSession();
 	if (session === null) {
 		return {

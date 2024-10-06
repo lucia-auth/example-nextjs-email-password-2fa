@@ -17,7 +17,7 @@ import type { SessionFlags } from "@/lib/server/session";
 
 const ipBucket = new RefillingTokenBucket<string>(3, 10);
 
-export async function signupAction(_: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function signupAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	// TODO: Assumes X-Forwarded-For is always included.
 	const clientIP = headers().get("X-Forwarded-For");
 	if (clientIP !== null && !ipBucket.check(clientIP, 1)) {

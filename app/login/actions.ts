@@ -13,7 +13,7 @@ import type { SessionFlags } from "@/lib/server/session";
 const throttler = new Throttler<number>([1, 2, 4, 8, 16, 30, 60, 180, 300]);
 const ipBucket = new RefillingTokenBucket<string>(20, 1);
 
-export async function loginAction(_: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function loginAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	// TODO: Assumes X-Forwarded-For is always included.
 	const clientIP = headers().get("X-Forwarded-For");
 	if (clientIP !== null && !ipBucket.check(clientIP, 1)) {
