@@ -34,12 +34,9 @@ export class RefillingTokenBucket<_Key> {
 			return true;
 		}
 		const refill = Math.floor((now - bucket.refilledAt) / (this.refillIntervalSeconds * 1000));
-		if (refill > 0) {
-			bucket.count = Math.min(bucket.count + refill, this.max);
-			bucket.refilledAt = now;
-		}
+		bucket.count = Math.min(bucket.count + refill, this.max);
+		bucket.refilledAt = now;
 		if (bucket.count < cost) {
-			this.storage.set(key, bucket);
 			return false;
 		}
 		bucket.count -= cost;
@@ -121,7 +118,6 @@ export class ExpiringTokenBucket<_Key> {
 			bucket.count = this.max;
 		}
 		if (bucket.count < cost) {
-			this.storage.set(key, bucket);
 			return false;
 		}
 		bucket.count -= cost;
