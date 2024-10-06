@@ -30,11 +30,6 @@ export async function updatePasswordAction(_prev: ActionResult, formData: FormDa
 			message: "Not authenticated"
 		};
 	}
-	if (!user.emailVerified) {
-		return {
-			message: "Forbidden"
-		};
-	}
 	if (user.registered2FA && !session.twoFactorVerified) {
 		return {
 			message: "Forbidden"
@@ -71,6 +66,7 @@ export async function updatePasswordAction(_prev: ActionResult, formData: FormDa
 			message: "Incorrect password"
 		};
 	}
+	passwordUpdateBucket.reset(session.id);
 	invalidateUserSessions(user.id);
 	await updateUserPassword(user.id, newPassword);
 
