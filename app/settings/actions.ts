@@ -9,7 +9,7 @@ import {
 	invalidateUserSessions,
 	setSessionTokenCookie
 } from "@/lib/server/session";
-import { getUserPasswordHash, updateUserPassword } from "@/lib/server/user";
+import { getUserPasswordHash, resetUserRecoveryCode, updateUserPassword } from "@/lib/server/user";
 import {
 	createEmailVerificationRequest,
 	sendVerificationEmail,
@@ -130,6 +130,43 @@ export async function updateEmailAction(_prev: ActionResult, formData: FormData)
 	return redirect("/verify-email");
 }
 
+export async function regenerateRecoveryCodeAction(): Promise<RegenerateRecoveryCodeActionResult> {
+	const { session, user } = getCurrentSession();
+	if (session === null || user === null) {
+		return {
+			error: "Not authenticated",
+			recoveryCode: null
+		};
+	}
+	if (!user.emailVerified) {
+		return {
+			error: "Forbidden",
+			recoveryCode: null
+		};
+	}
+	if (!session.twoFactorVerified) {
+		return {
+			error: "Forbidden",
+			recoveryCode: null
+		};
+	}
+	const recoveryCode = resetUserRecoveryCode(session.userId);
+	return {
+		error: null,
+		recoveryCode
+	};
+}
+
 interface ActionResult {
 	message: string;
 }
+
+type RegenerateRecoveryCodeActionResult =
+	| {
+			error: string;
+			recoveryCode: null;
+	  }
+	| {
+			error: null;
+			recoveryCode: string;
+	  };

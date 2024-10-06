@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { UpdateEmailForm, UpdatePasswordForm } from "./components";
+import { RecoveryCodeSection, UpdateEmailForm, UpdatePasswordForm } from "./components";
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 import { getUserRecoverCode } from "@/lib/server/user";
@@ -40,15 +40,7 @@ export default function Page() {
 						<Link href="/2fa/setup">Update</Link>
 					</section>
 				)}
-
-				{recoveryCode !== null && (
-					<section>
-						<h1>Recovery code</h1>
-						<p>Your recovery code is: {recoveryCode}</p>
-						{/* TODO!! */}
-						<button>Generate new code</button>
-					</section>
-				)}
+				{recoveryCode !== null && <RecoveryCodeSection recoveryCode={recoveryCode} />}
 			</main>
 		</>
 	);

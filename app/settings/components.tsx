@@ -1,6 +1,7 @@
 "use client";
 
-import { updateEmailAction, updatePasswordAction } from "./actions";
+import { useState } from "react";
+import { regenerateRecoveryCodeAction, updateEmailAction, updatePasswordAction } from "./actions";
 import { useFormState } from "react-dom";
 
 const initialUpdatePasswordState = {
@@ -39,5 +40,25 @@ export function UpdateEmailForm() {
 			<button>Update</button>
 			<p>{state.message}</p>
 		</form>
+	);
+}
+
+export function RecoveryCodeSection(props: { recoveryCode: string }) {
+	const [recoveryCode, setRecoveryCode] = useState(props.recoveryCode);
+	return (
+		<section>
+			<h1>Recovery code</h1>
+			<p>Your recovery code is: {recoveryCode}</p>
+			<button
+				onClick={async () => {
+					const result = await regenerateRecoveryCodeAction();
+					if (result.recoveryCode !== null) {
+						setRecoveryCode(result.recoveryCode);
+					}
+				}}
+			>
+				Generate new code
+			</button>
+		</section>
 	);
 }
