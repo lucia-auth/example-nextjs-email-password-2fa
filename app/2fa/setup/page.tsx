@@ -5,8 +5,12 @@ import { encodeBase64 } from "@oslojs/encoding";
 import { createTOTPKeyURI } from "@oslojs/otp";
 import { redirect } from "next/navigation";
 import { renderSVG } from "uqr";
+import { globalGETRateLimit } from "@/lib/server/request";
 
 export default function Page() {
+	if (!globalGETRateLimit()) {
+		return "Too many requests";
+	}
 	const { session, user } = getCurrentSession();
 	if (session === null) {
 		return redirect("/login");

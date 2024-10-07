@@ -1,6 +1,7 @@
 "use server";
 
 import { RefillingTokenBucket } from "@/lib/server/rate-limit";
+import { globalPOSTRateLimit } from "@/lib/server/request";
 import { getCurrentSession, setSessionAs2FAVerified } from "@/lib/server/session";
 import { updateUserTOTPKey } from "@/lib/server/user";
 import { decodeBase64 } from "@oslojs/encoding";
@@ -10,6 +11,11 @@ import { redirect } from "next/navigation";
 const totpUpdateBucket = new RefillingTokenBucket<number>(3, 60 * 10);
 
 export async function setup2FAAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		}
+	}
 	const { session, user } = getCurrentSession();
 	if (session === null) {
 		return {

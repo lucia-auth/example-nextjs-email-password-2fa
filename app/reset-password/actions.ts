@@ -14,10 +14,16 @@ import {
 } from "@/lib/server/session";
 import { updateUserPassword } from "@/lib/server/user";
 import { redirect } from "next/navigation";
+import { globalPOSTRateLimit } from "@/lib/server/request";
 
 import type { SessionFlags } from "@/lib/server/session";
 
 export async function resetPasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		};
+	}
 	const { session: passwordResetSession, user } = validatePasswordResetSessionRequest();
 	if (passwordResetSession === null) {
 		return {

@@ -11,6 +11,7 @@ import {
 } from "@/lib/server/email-verification";
 import { invalidateUserPasswordResetSessions } from "@/lib/server/password-reset";
 import { ExpiringTokenBucket } from "@/lib/server/rate-limit";
+import { globalPOSTRateLimit } from "@/lib/server/request";
 import { getCurrentSession } from "@/lib/server/session";
 import { updateUserEmailAndSetEmailAsVerified } from "@/lib/server/user";
 import { redirect } from "next/navigation";
@@ -18,6 +19,12 @@ import { redirect } from "next/navigation";
 const bucket = new ExpiringTokenBucket<number>(5, 60 * 30);
 
 export async function verifyEmailAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		}
+	}
+	
 	const { session, user } = getCurrentSession();
 	if (session === null) {
 		return {

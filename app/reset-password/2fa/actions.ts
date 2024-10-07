@@ -2,6 +2,7 @@
 
 import { recoveryCodeBucket, resetUser2FAWithRecoveryCode, totpBucket } from "@/lib/server/2fa";
 import { setPasswordResetSessionAs2FAVerified, validatePasswordResetSessionRequest } from "@/lib/server/password-reset";
+import { globalPOSTRateLimit } from "@/lib/server/request";
 import { getUserTOTPKey } from "@/lib/server/user";
 import { verifyTOTP } from "@oslojs/otp";
 import { redirect } from "next/navigation";
@@ -10,6 +11,11 @@ export async function verifyPasswordReset2FAWithTOTPAction(
 	_prev: ActionResult,
 	formData: FormData
 ): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		}
+	}
 	const { session, user } = validatePasswordResetSessionRequest();
 	if (session === null) {
 		return {
@@ -63,6 +69,11 @@ export async function verifyPasswordReset2FAWithRecoveryCodeAction(
 	_prev: ActionResult,
 	formData: FormData
 ): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		}
+	}
 	const { session, user } = validatePasswordResetSessionRequest();
 	if (session === null) {
 		return {

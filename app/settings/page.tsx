@@ -4,8 +4,12 @@ import { RecoveryCodeSection, UpdateEmailForm, UpdatePasswordForm } from "./comp
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 import { getUserRecoverCode } from "@/lib/server/user";
+import { globalGETRateLimit } from "@/lib/server/request";
 
 export default function Page() {
+	if (!globalGETRateLimit()) {
+		return "Too many requests";
+	}
 	const { session, user } = getCurrentSession();
 	if (session === null) {
 		return redirect("/login");

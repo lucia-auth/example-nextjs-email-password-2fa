@@ -12,12 +12,19 @@ import { createSession, generateSessionToken, setSessionTokenCookie } from "@/li
 import { createUser, verifyUsernameInput } from "@/lib/server/user";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { globalPOSTRateLimit } from "@/lib/server/request";
 
 import type { SessionFlags } from "@/lib/server/session";
 
 const ipBucket = new RefillingTokenBucket<string>(3, 10);
 
 export async function signupAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		};
+	}
+
 	// TODO: Assumes X-Forwarded-For is always included.
 	const clientIP = headers().get("X-Forwarded-For");
 	if (clientIP !== null && !ipBucket.check(clientIP, 1)) {

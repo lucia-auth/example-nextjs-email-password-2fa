@@ -8,6 +8,7 @@ import {
 	setPasswordResetSessionTokenCookie
 } from "@/lib/server/password-reset";
 import { RefillingTokenBucket } from "@/lib/server/rate-limit";
+import { globalPOSTRateLimit } from "@/lib/server/request";
 import { generateSessionToken } from "@/lib/server/session";
 import { getUserFromEmail } from "@/lib/server/user";
 import { headers } from "next/headers";
@@ -17,6 +18,11 @@ const passwordResetEmailIPBucket = new RefillingTokenBucket<string>(3, 60);
 const passwordResetEmailUserBucket = new RefillingTokenBucket<number>(3, 60);
 
 export async function forgotPasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+	if (!globalPOSTRateLimit()) {
+		return {
+			message: "Too many requests"
+		}
+	}
 	// TODO: Assumes X-Forwarded-For is always included.
 	const clientIP = headers().get("X-Forwarded-For");
 	if (clientIP !== null && !passwordResetEmailIPBucket.check(clientIP, 1)) {
