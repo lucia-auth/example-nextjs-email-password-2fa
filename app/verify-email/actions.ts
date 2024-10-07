@@ -22,9 +22,9 @@ export async function verifyEmailAction(_prev: ActionResult, formData: FormData)
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
-	
+
 	const { session, user } = getCurrentSession();
 	if (session === null) {
 		return {

@@ -14,7 +14,7 @@ export async function setup2FAAction(_prev: ActionResult, formData: FormData): P
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	const { session, user } = getCurrentSession();
 	if (session === null) {

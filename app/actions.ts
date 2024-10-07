@@ -8,7 +8,7 @@ export async function logoutAction(): Promise<ActionResult> {
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	const { session } = getCurrentSession();
 	if (session === null) {

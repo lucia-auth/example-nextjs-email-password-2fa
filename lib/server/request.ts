@@ -12,7 +12,6 @@ export function globalGETRateLimit(): boolean {
 	return globalBucket.consume(clientIP, 1);
 }
 
-
 export function globalPOSTRateLimit(): boolean {
 	// Note: Assumes X-Forwarded-For will always be defined.
 	const clientIP = headers().get("X-Forwarded-For");
@@ -21,4 +20,3 @@ export function globalPOSTRateLimit(): boolean {
 	}
 	return globalBucket.consume(clientIP, 3);
 }
-

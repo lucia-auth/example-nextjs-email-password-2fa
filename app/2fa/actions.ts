@@ -11,7 +11,7 @@ export async function verify2FAAction(_prev: ActionResult, formData: FormData): 
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	const { session, user } = getCurrentSession();
 	if (session === null) {

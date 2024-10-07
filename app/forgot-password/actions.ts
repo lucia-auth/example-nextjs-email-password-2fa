@@ -21,7 +21,7 @@ export async function forgotPasswordAction(_prev: ActionResult, formData: FormDa
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	// TODO: Assumes X-Forwarded-For is always included.
 	const clientIP = headers().get("X-Forwarded-For");

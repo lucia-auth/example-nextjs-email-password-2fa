@@ -14,7 +14,7 @@ export async function verifyPasswordReset2FAWithTOTPAction(
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	const { session, user } = validatePasswordResetSessionRequest();
 	if (session === null) {
@@ -72,7 +72,7 @@ export async function verifyPasswordReset2FAWithRecoveryCodeAction(
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	const { session, user } = validatePasswordResetSessionRequest();
 	if (session === null) {

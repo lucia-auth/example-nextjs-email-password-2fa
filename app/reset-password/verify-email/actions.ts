@@ -15,7 +15,7 @@ export async function verifyPasswordResetEmailAction(_prev: ActionResult, formDa
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
-		}
+		};
 	}
 	const { session } = validatePasswordResetSessionRequest();
 	if (session === null) {
