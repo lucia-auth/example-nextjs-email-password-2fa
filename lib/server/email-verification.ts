@@ -84,6 +84,9 @@ export function getUserEmailVerificationRequestFromRequest(): EmailVerificationR
 		return null;
 	}
 	const request = getUserEmailVerificationRequest(user.id, id);
+	if (request === null) {
+		deleteEmailVerificationRequestCookie();
+	}
 	return request;
 }
 
