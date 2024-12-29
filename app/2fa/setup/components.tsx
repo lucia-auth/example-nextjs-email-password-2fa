@@ -11,7 +11,7 @@ export function TwoFactorSetUpForm(props: { encodedTOTPKey: string }) {
 	const [state, action] = useFormState(setup2FAAction, initial2FASetUpState);
 	return (
 		<form action={action}>
-			<input name="key" value={props.encodedTOTPKey} hidden required />
+			<input name="key" value={props.encodedTOTPKey} readOnly hidden required />
 			<label htmlFor="form-totp.code">Verify the code from the app</label>
 			<input id="form-totp.code" name="code" required />
 			<br />
